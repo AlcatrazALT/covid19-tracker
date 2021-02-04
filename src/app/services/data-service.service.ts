@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 import {map} from 'rxjs/operators';
 import { GlobalDataSummary } from '../models/global-data';
 
@@ -19,15 +20,20 @@ export class DataServiceService {
         rows.splice(0, 1)// remove header
         rows.forEach(row => {
           let cols = row.split(/,(?=\S)/)
-          data.push({
+          
+          let cs = {
             country: cols[3],
             confirmed: +cols[7],
             deaths: +cols[8],
             recovered: +cols[9],
             active: +cols[10],
-          })
+          }
+          
+          data.push(cs)
         })
-        return data
+
+      const groupedDataByCountry = _.groupBy(data, row => row.country)
+      return <GlobalDataSummary[]>Object.values(groupedDataByCountry)
       })
     )
   }
