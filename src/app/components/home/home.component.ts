@@ -20,18 +20,15 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getGlobalData().subscribe(
       {
-        next: (result) => {
-          debugger
-          result.forEach(cs => {
-            this.globalData = cs
-            cs.forEach(item => {
-              if(item.active != undefined && item.confirmed != undefined && item.deaths != undefined && item.recovered != undefined && !Number.isNaN(item.confirmed)){
-                this.totalActive += item.active
-                this.totalConfirmed += item.confirmed
-                this.totalDeaths += item.deaths
-                this.totalRecovered += item.recovered
-              }
-            })
+        next: (globalDataSummary) => {
+          this.globalData = globalDataSummary
+          globalDataSummary.forEach(globalData => {
+            if(globalData.active != undefined && globalData.confirmed != undefined && globalData.deaths != undefined && globalData.recovered != undefined && !Number.isNaN(globalData.confirmed)){
+              this.totalActive += globalData.active
+              this.totalConfirmed += globalData.confirmed
+              this.totalDeaths += globalData.deaths
+              this.totalRecovered += globalData.recovered
+            }
           })
         }
       }

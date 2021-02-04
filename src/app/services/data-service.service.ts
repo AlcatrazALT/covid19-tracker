@@ -33,7 +33,9 @@ export class DataServiceService {
         })
 
       const groupedDataByCountry = _.groupBy(data, row => row.country)
-      return Object.values(groupedDataByCountry)
+      const values = Object.values(groupedDataByCountry)
+      const result = values.reduce((acc, value) => acc.concat(value), [])
+      return result
       })
     )
   }
