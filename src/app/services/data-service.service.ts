@@ -33,7 +33,7 @@ export class DataServiceService {
         })
 
       const groupedDataByCountry = _.groupBy(data, row => row.country)
-      return <GlobalDataSummary[]>Object.values(groupedDataByCountry)
+      return Object.values(groupedDataByCountry)
       })
     )
   }
