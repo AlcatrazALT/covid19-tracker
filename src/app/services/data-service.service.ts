@@ -32,10 +32,10 @@ export class DataServiceService {
           data.push(cs)
         })
 
-      const groupedDataByCountry = _.groupBy(data, row => row.country)
-      const values = Object.values(groupedDataByCountry)
-      const result = values.reduce((acc, value) => acc.concat(value), [])
-      return result
+        const groupedDataByCountry = _.groupBy(data, row => row.country)
+        const values = Object.values(groupedDataByCountry)
+        const result = values.reduce((acc, value) => acc.concat(value), [])
+        return result
       })
     )
   }
