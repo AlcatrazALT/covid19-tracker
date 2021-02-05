@@ -27,9 +27,7 @@ export class CountriesComponent implements OnInit {
       this.data = globalDataSummary
       this.data.forEach(globalData => {
         if (globalData.country != undefined) {
-          if (!this.countries.includes(globalData.country)) {
-            this.countries.push(globalData.country)
-          }
+          this.countries.push(globalData.country)
         }
       })
     })
@@ -39,7 +37,7 @@ export class CountriesComponent implements OnInit {
     console.log(selectedCountry)
     this.data.forEach(dataRow => {
       if (dataRow.country == selectedCountry) {
-        if(dataRow.active != undefined && dataRow.confirmed != undefined && dataRow.deaths != undefined && dataRow.recovered != undefined && !Number.isNaN(dataRow.confirmed)){
+        if(!Number.isNaN(dataRow.confirmed)){
           this.totalData.totalActive += dataRow.active
           this.totalData.totalConfirmed += dataRow.confirmed
           this.totalData.totalDeaths += dataRow.deaths

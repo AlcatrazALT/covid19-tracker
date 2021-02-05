@@ -16,6 +16,7 @@ export class DataServiceService {
     return this.http.get(this.globalDataUrl, {responseType: 'text'}).pipe(
       map(response => {
         let data: GlobalDataSummary[] = []
+        
         let rows = response.split('\n')
         rows.splice(0, 1)// remove header
         rows.forEach(row => {
@@ -32,10 +33,20 @@ export class DataServiceService {
           data.push(cs)
         })
 
-        const groupedDataByCountry = _.groupBy(data, row => row.country)
+        const groupedDataByCountry = _(data)
+          .groupBy(row => row.country)
+          .map((obj, key) => ({
+            country: key,
+            confirmed: _.sumBy(obj, cases => cases.confirmed),
+            deaths: _.sumBy(obj, cases => cases.deaths),
+            recovered: _.sumBy(obj, cases => cases.recovered),
+            active: _.sumBy(obj, cases => cases.active)
+          })).value()
+
         const values = Object.values(groupedDataByCountry)
         const result = values.reduce((acc, value) => acc.concat(value), [])
-        return result
+
+        return result;
       })
     )
   }

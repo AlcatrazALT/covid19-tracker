@@ -1,7 +1,14 @@
 <div class="jumbotron bg-white text-center">
   <h1 class="display-4">Corona Covid-19 Tracker</h1>
   <hr>
-  <app-dashboard-card
-    [totalData]="totalData"
-    ></app-dashboard-card>
+  <app-dashboard-card [totalData]="totalData"></app-dashboard-card>
+</div>
+<div class="row">
+  <div class="col">
+    <google-chart [columns]="columnsChartColumns" [data]="columnsChartData" [type]="columnsChartType" [options]="columnsChartOptions"></google-chart>
+  </div>
+    
+  <div class="col">
+    <google-chart [columns]="pieChartColumns" [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions"></google-chart>
+  </div>
 </div>

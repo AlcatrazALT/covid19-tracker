@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChartType } from 'angular-google-charts';
 import { GlobalDataSummary } from 'src/app/models/global-data';
 import { TotalData } from 'src/app/models/total-data';
 import { DataServiceService } from 'src/app/services/data-service.service';
@@ -19,23 +20,51 @@ export class HomeComponent implements OnInit {
 
   globalData: GlobalDataSummary[] = []
 
+  pieChartData = []
+  pieChartType: ChartType = ChartType.PieChart
+  pieChartColumns = ["Country", "Cases"]
+  pieChartOptions = {
+    height: 500
+  }
+
+  columnsChartData = []
+  columnsChartType: ChartType = ChartType.ColumnChart
+  columnsChartColumns = ["Country", "Cases"]
+  columnsChartOptions = {
+    height: 500,
+    width: 500
+  }
+  private showConfirmedValue = 2000
   constructor(private dataService: DataServiceService) { }
 
-  ngOnInit(): void {
-    this.dataService.getGlobalData().subscribe(
-      {
-        next: (globalDataSummary) => {
-          this.globalData = globalDataSummary
-          globalDataSummary.forEach(globalData => {
-            if(globalData.active != undefined && globalData.confirmed != undefined && globalData.deaths != undefined && globalData.recovered != undefined && !Number.isNaN(globalData.confirmed)){
-              this.totalData.totalActive += globalData.active
-              this.totalData.totalConfirmed += globalData.confirmed
-              this.totalData.totalDeaths += globalData.deaths
-              this.totalData.totalRecovered += globalData.recovered
-            }
-          })
-        }
+  initChart(){
+    let dataTable = []
+    this.globalData.forEach(cs=>{
+      if(cs.confirmed > this.showConfirmedValue){
+        dataTable.push([cs.country, cs.confirmed])
       }
-    )
+    })
+    this.pieChartData = dataTable
+    this.columnsChartData = dataTable
+  }
+
+  ngOnInit(): void {
+    this.dataService.getGlobalData()
+      .subscribe(
+        {
+          next: (result) => {
+            this.globalData = result;
+            result.forEach(cs => {
+              if (!Number.isNaN(cs.confirmed)) {
+                this.totalData.totalActive += cs.active
+                this.totalData.totalConfirmed += cs.confirmed
+                this.totalData.totalDeaths += cs.deaths
+                this.totalData.totalRecovered += cs.active
+              }
+            })
+            this.initChart()
+          }
+        }
+      )
   }
 }
