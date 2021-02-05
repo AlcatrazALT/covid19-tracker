@@ -4,11 +4,8 @@
   <div class="mx-auto">
     <div class="form-group col-lg-5 mx-auto">
       <label for="c">Select Country</label>
-      <select name="" class="form-control" id="c" #selectedCountry (change)="selectCountry(selectedCountry.value)">
-        <option selected disabled="true">Select Country</option>
-        <option 
-          value="{{country}}"
-          *ngFor="let country of countries">{{country}}</option>
+      <select name="" class="form-control" id="c" #input (change)="selectCountry(input.value)">
+        <option value="{{country}}" *ngFor="let country of countries">{{country}}</option>
       </select>
     </div>
   </div>

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType } from 'angular-google-charts';
+import { merge } from 'rxjs';
 import { DateWiseData } from 'src/app/models/date-wise-data';
 import { GlobalDataSummary } from 'src/app/models/global-data';
 import { TotalData } from 'src/app/models/total-data';
 import { DataServiceService } from 'src/app/services/data-service.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-countries',
@@ -36,30 +38,35 @@ export class CountriesComponent implements OnInit {
   constructor(private dataService: DataServiceService) { }
 
   ngOnInit(): void {
-    this.dataService.getGlobalData().subscribe(globalDataSummary => {
-      this.data = globalDataSummary
-      this.data.forEach(globalData => {
-        if (globalData.country != undefined) {
-          this.countries.push(globalData.country)
-        }
-      })
-    })
 
-    this.dataService.getDateWiseData().subscribe(result => {
-      this.dateWiseData = result
-      this.updateLineChart()
+    merge(
+      this.dataService.getDateWiseData().pipe(
+        map(result => {
+          this.dateWiseData = result
+        })
+      ), 
+      this.dataService.getGlobalData().pipe(
+        map(result => {
+          this.data = result
+          this.data.forEach(cs => {
+            this.countries.push(cs.country)
+          })
+        })
+      )
+    ).subscribe({
+      complete: () => {
+        this.selectCountry(this.countries[0])
+      }
     })
   }
 
   selectCountry(selectedCountry: string){
     this.data.forEach(dataRow => {
       if (dataRow.country == selectedCountry) {
-        if(!Number.isNaN(dataRow.confirmed)){
-          this.totalData.totalActive += dataRow.active
-          this.totalData.totalConfirmed += dataRow.confirmed
-          this.totalData.totalDeaths += dataRow.deaths
-          this.totalData.totalRecovered += dataRow.recovered
-        }
+        this.totalData.totalActive += dataRow.active
+        this.totalData.totalConfirmed += dataRow.confirmed
+        this.totalData.totalDeaths += dataRow.deaths
+        this.totalData.totalRecovered += dataRow.recovered
       }
     })
 
@@ -76,5 +83,4 @@ export class CountriesComponent implements OnInit {
 
     this.lineChartData = dataTable
   }
-
 }
