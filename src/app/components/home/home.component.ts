@@ -24,7 +24,11 @@ export class HomeComponent implements OnInit {
   pieChartType: ChartType = ChartType.PieChart
   pieChartColumns = ["Country", "Cases"]
   pieChartOptions = {
-    height: 500
+    height: 500,
+    animation: {
+      duration: 1000,
+      easing: 'out'
+    }
   }
 
   columnsChartData = []
@@ -32,7 +36,11 @@ export class HomeComponent implements OnInit {
   columnsChartColumns = ["Country", "Cases"]
   columnsChartOptions = {
     height: 500,
-    width: 600
+    width: 600,
+    animation: {
+      duration: 1000,
+      easing: 'out'
+    }
   }
 
   private showConfirmedValue = 2000

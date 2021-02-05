@@ -32,7 +32,11 @@ export class CountriesComponent implements OnInit {
   lineChartColumns = ["Date", "Cases"]
   lineChartOptions = {
     height: 500,
-    width: 600
+    width: 600,
+    animation: {
+      duration: 1000,
+      easing: 'out'
+    }
   }
 
   constructor(private dataService: DataServiceService) { }
