@@ -14,23 +14,28 @@
   </div>
   <app-dashboard-card [totalData]="totalData"></app-dashboard-card>
 
-  <div class="card">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Date</th>
-          <th>Cases</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let cd of selectedCountryData; index as index">
-          <td>{{index + 1}}</td>
-          <td>{{cd.date | date}}</td>
-          <td>{{cd.cases}}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="row">
+    <div class="col">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Cases</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let cd of selectedCountryData; index as index">
+            <td>{{index + 1}}</td>
+            <td>{{cd.date | date}}</td>
+            <td>{{cd.cases}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <google-chart [columns]="lineChartColumns" [data]="lineChartData" [type]="lineChartType" [options]="lineChartOptions"></google-chart>
+    </div>
   </div>
 </div>

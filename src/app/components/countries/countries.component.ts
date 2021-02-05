@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChartType } from 'angular-google-charts';
 import { DateWiseData } from 'src/app/models/date-wise-data';
 import { GlobalDataSummary } from 'src/app/models/global-data';
 import { TotalData } from 'src/app/models/total-data';
@@ -24,6 +25,14 @@ export class CountriesComponent implements OnInit {
   dateWiseData = {}
   selectedCountryData: DateWiseData[]
 
+  lineChartData = []
+  lineChartType: ChartType = ChartType.LineChart
+  lineChartColumns = ["Date", "Cases"]
+  lineChartOptions = {
+    height: 500,
+    width: 600
+  }
+
   constructor(private dataService: DataServiceService) { }
 
   ngOnInit(): void {
@@ -38,6 +47,7 @@ export class CountriesComponent implements OnInit {
 
     this.dataService.getDateWiseData().subscribe(result => {
       this.dateWiseData = result
+      this.updateLineChart()
     })
   }
 
@@ -54,8 +64,17 @@ export class CountriesComponent implements OnInit {
     })
 
     this.selectedCountryData = this.dateWiseData[selectedCountry]
-    
-    
+
+    this.updateLineChart()
+  }
+
+  updateLineChart(){
+    let dataTable = []
+    this.selectedCountryData.forEach(cs=>{
+      dataTable.push([cs.date, cs.cases])
+    })
+
+    this.lineChartData = dataTable
   }
 
 }
