@@ -39,6 +39,7 @@ export class CountriesComponent implements OnInit {
     }
   }
 
+  loading = true
   constructor(private dataService: DataServiceService) { }
 
   ngOnInit(): void {
@@ -60,6 +61,7 @@ export class CountriesComponent implements OnInit {
     ).subscribe({
       complete: () => {
         this.selectCountry(this.countries[0])
+        this.loading = false
       }
     })
   }

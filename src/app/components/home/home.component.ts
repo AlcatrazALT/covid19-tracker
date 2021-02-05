@@ -53,6 +53,8 @@ export class HomeComponent implements OnInit {
   recoveredInputValue = 'recovered'
   activeInputValue = 'active'
 
+  loading = true
+
   constructor(private dataService: DataServiceService) { }
 
   initChart(caseType:string){
@@ -106,6 +108,9 @@ export class HomeComponent implements OnInit {
               }
             })
             this.initChart(this.confirmedInputValue)
+          },
+          complete: () => {
+            this.loading = false
           }
         }
       )
