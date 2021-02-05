@@ -32,18 +32,53 @@ export class HomeComponent implements OnInit {
   columnsChartColumns = ["Country", "Cases"]
   columnsChartOptions = {
     height: 500,
-    width: 500
+    width: 600
   }
+
   private showConfirmedValue = 2000
+  private showActiveValue = 2000
+  private showRecoveredValue = 2000
+  private showDeathsValue = 1000
+
+  confirmedInputValue = 'confirmed'
+  deathsInputValue = 'deaths'
+  recoveredInputValue = 'recovered'
+  activeInputValue = 'active'
+
   constructor(private dataService: DataServiceService) { }
 
-  initChart(){
+  initChart(caseType:string){
+
     let dataTable = []
     this.globalData.forEach(cs=>{
-      if(cs.confirmed > this.showConfirmedValue){
-        dataTable.push([cs.country, cs.confirmed])
+      let value:number = 0
+      switch (caseType) {
+        case this.confirmedInputValue:
+          if(cs.confirmed > this.showConfirmedValue){
+            value = cs.confirmed
+          }
+          break;
+        case this.deathsInputValue:
+          if(cs.deaths > this.showDeathsValue){
+            value = cs.deaths
+          }
+          break;
+        case this.recoveredInputValue:
+          if(cs.recovered > this.showRecoveredValue){
+            value = cs.recovered
+          }
+          break;
+        case this.activeInputValue:
+          if(cs.active > this.showActiveValue){
+            value = cs.active
+          }
+          break;
       }
+
+      dataTable.push([cs.country, value])
+
     })
+
     this.pieChartData = dataTable
     this.columnsChartData = dataTable
   }
@@ -62,9 +97,14 @@ export class HomeComponent implements OnInit {
                 this.totalData.totalRecovered += cs.active
               }
             })
-            this.initChart()
+            this.initChart(this.confirmedInputValue)
           }
         }
       )
+  }
+
+  updateChart(input: HTMLInputElement){
+    const caseType = input.value
+    this.initChart(caseType)
   }
 }

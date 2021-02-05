@@ -3,6 +3,36 @@
   <hr>
   <app-dashboard-card [totalData]="totalData"></app-dashboard-card>
 </div>
+<hr>
+<div class="ui form">
+  <div class="inline fields">
+    <label for="caseType">Select Case Type :</label>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" #confirmed (click)="updateChart(confirmed)" [value]="confirmedInputValue" [id]="confirmedInputValue" name="caseType" checked="" tabindex="0" class="hidden">
+        <label [for]="confirmedInputValue">Confirmed</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" #deaths (click)="updateChart(deaths)" [value]="deathsInputValue" [id]="deathsInputValue" name="caseType" tabindex="0" class="hidden">
+        <label [for]="deathsInputValue">Deaths</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" #recovered (click)="updateChart(recovered)" [value]="recoveredInputValue" [id]="recoveredInputValue" name="caseType" tabindex="0" class="hidden">
+        <label [for]="recoveredInputValue">Recovered</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" #active (click)="updateChart(active)" [value]="activeInputValue" [id]="activeInputValue" name="caseType" tabindex="0" class="hidden">
+        <label [for]="activeInputValue">Active</label>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="col">
     <google-chart [columns]="columnsChartColumns" [data]="columnsChartData" [type]="columnsChartType" [options]="columnsChartOptions"></google-chart>
