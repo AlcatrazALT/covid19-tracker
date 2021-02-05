@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DateWiseData } from 'src/app/models/date-wise-data';
 import { GlobalDataSummary } from 'src/app/models/global-data';
 import { TotalData } from 'src/app/models/total-data';
 import { DataServiceService } from 'src/app/services/data-service.service';
@@ -20,6 +21,9 @@ export class CountriesComponent implements OnInit {
     totalRecovered: 0
   }
 
+  dateWiseData = {}
+  selectedCountryData: DateWiseData[]
+
   constructor(private dataService: DataServiceService) { }
 
   ngOnInit(): void {
@@ -31,10 +35,13 @@ export class CountriesComponent implements OnInit {
         }
       })
     })
+
+    this.dataService.getDateWiseData().subscribe(result => {
+      this.dateWiseData = result
+    })
   }
 
   selectCountry(selectedCountry: string){
-    console.log(selectedCountry)
     this.data.forEach(dataRow => {
       if (dataRow.country == selectedCountry) {
         if(!Number.isNaN(dataRow.confirmed)){
@@ -45,6 +52,10 @@ export class CountriesComponent implements OnInit {
         }
       }
     })
+
+    this.selectedCountryData = this.dateWiseData[selectedCountry]
+    
+    
   }
 
 }
